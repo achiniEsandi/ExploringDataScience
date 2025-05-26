@@ -1,1 +1,1 @@
-# ExploringDataScience
+# Exploring Data Science
