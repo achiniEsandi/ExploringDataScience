@@ -1,0 +1,6 @@
+[
+  {"userId": "user_01", "sessionId": "sess_001", "timestamp": 1725412939000, "maxScrollPercent": 82},
+  {"userId": "user_02", "sessionId": "sess_002", "timestamp": 1725412945000, "maxScrollPercent": 50},
+  {"userId": "user_01", "sessionId": "sess_003", "timestamp": 1725412951000, "maxScrollPercent": 95},
+  {"userId": "user_03", "sessionId": "sess_004", "timestamp": 1725412957000, "maxScrollPercent": 30}
+]

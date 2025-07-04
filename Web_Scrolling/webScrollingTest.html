@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Scroll Tracking Example</title>
+  <style>
+    body {
+      height: 3000px; /* Just to allow scrolling */
+      padding: 20px;
+      font-family: Arial;
+    }
+  </style>
+</head>
+<body>
+  <h1>Scroll Tracker</h1>
+  <p>Scroll down to see your scroll percentage logged in the console.</p>
+
+  <script>
+    let maxScrollPercent = 0;
+
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = Math.round((scrollTop / docHeight) * 100);
+
+      if (scrollPercent > maxScrollPercent) {
+        maxScrollPercent = scrollPercent;
+        console.log(`Max Scroll: ${maxScrollPercent}%`);
+        
+        // You could send this data to a server like this:
+        /*
+        fetch('/log-scroll', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({scrollPercent: maxScrollPercent, timestamp: Date.now()})
+        });
+        */
+      }
+    });
+  </script>
+</body>
+</html>
