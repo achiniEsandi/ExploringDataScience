@@ -51,15 +51,22 @@ if st.button("🚀 Find My Career Path"):
         4. Why this matches the user
         """
 
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": prompt}]
-        )
+        try:
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[{"role": "user", "content": prompt}]
+            )
 
-        result = response['choices'][0]['message']['content']
+            result = response['choices'][0]['message']['content']
 
-        st.markdown("### 🧭 AI Suggestions")
-        st.success(result)
+            st.markdown("### 🧭 AI Suggestions")
+            st.success(result)
+
+        except openai.error.AuthenticationError:
+            st.error("Authentication Error: Your OpenAI API key is invalid or missing. Please check your .env file.")
+        except Exception as e:
+            st.error(f"An error occurred while generating suggestions: {e}")
+            result = ""  # Ensure result is defined even on error
 
         # Save to history
         data = {

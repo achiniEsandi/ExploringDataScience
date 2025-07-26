@@ -3,3 +3,5 @@ openai
 pandas
 pdfplumber
 python-dotenv
+transformers
+torch
