@@ -1,5 +1,5 @@
 import streamlit as st
-import openai
+from openai import OpenAI
 import pandas as pd
 import datetime
 import os
@@ -7,7 +7,10 @@ from dotenv import load_dotenv
 
 # Load API key from .env file
 load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+print(os.getenv("OPENAI_API_KEY"))
+
+# Initialize OpenAI client
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 st.set_page_config(page_title="Visionary – Career Path Finder")
 st.title("🎯 Visionary – AI Career Path Finder")
@@ -26,7 +29,9 @@ if uploaded_file is not None:
     import pdfplumber
     with pdfplumber.open(uploaded_file) as pdf:
         for page in pdf.pages:
-            resume_text += page.extract_text()
+            text = page.extract_text()
+            if text:
+                resume_text += text
 
 if st.button("🚀 Find My Career Path"):
     with st.spinner("AI is analyzing your inputs..."):
@@ -51,22 +56,20 @@ if st.button("🚀 Find My Career Path"):
         4. Why this matches the user
         """
 
+        result = ""  # Initialize result
         try:
-            response = openai.ChatCompletion.create(
+            response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": prompt}]
             )
 
-            result = response['choices'][0]['message']['content']
-
-            st.markdown("### 🧭 AI Suggestions")
-            st.success(result)
-
-        except openai.error.AuthenticationError:
-            st.error("Authentication Error: Your OpenAI API key is invalid or missing. Please check your .env file.")
+            result = response.choices[0].message.content
         except Exception as e:
-            st.error(f"An error occurred while generating suggestions: {e}")
-            result = ""  # Ensure result is defined even on error
+            st.error(f"An error occurred: {e}")
+
+        st.markdown("### 🧭 AI Suggestions")
+        if result:
+            st.success(result)
 
         # Save to history
         data = {
